@@ -1,13 +1,22 @@
 package com.pethumjeewantha;
 
+import com.pethumjeewantha.annotations.Table;
+import com.pethumjeewantha.util.NoSuchTableException;
+
+import java.lang.reflect.Field;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public class TableCreation {
 
-    public static void init(String url, String userName, String password) throws SQLException {
-        Connection connection = DriverManager.getConnection(url, userName, password);
+    public static void init(Connection connection, Class table) throws NoSuchTableException {
+        Field[] fields = table.getDeclaredFields();
 
+        for (Field field : fields) {
+            Table tableName = field.getAnnotation(Table.class);
+
+            if (tableName == null) throw new NoSuchTableException("There is no table annotation");
+
+
+        }
     }
 }
