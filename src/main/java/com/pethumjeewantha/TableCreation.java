@@ -11,10 +11,12 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class TableCreation {
 
-    public static void init(Connection connection, Class tableClass) throws NoSuchTableException, DuplicateIdException, NoSuchColumnException, InvocationTargetException, IllegalAccessException {
+    public static int init(Connection connection, Class tableClass) throws NoSuchTableException, DuplicateIdException, NoSuchColumnException, InvocationTargetException, IllegalAccessException, SQLException {
         Annotation table = tableClass.getAnnotation(Table.class);
 
         if (table == null) throw new NoSuchTableException("Add Table Class");
@@ -32,7 +34,7 @@ public class TableCreation {
                 String type;
                 switch (field.getType().getTypeName()) {
                     case "java.lang.String":
-                        type = "MEDIUMTEXT";
+                        type = "VARCHAR(500)";
                         break;
                     case "java.math.BigDecimal":
                         type = "DECIMAL";
@@ -56,13 +58,19 @@ public class TableCreation {
         if (idCount > 1) throw new DuplicateIdException("Id should not be duplicate");
 
         if (idCount == 1) {
-            sql.append(String.format("CONSTRAINT PRIMARY KEY (%s) ", id));
+            sql.append(String.format("CONSTRAINT PRIMARY KEY (%s)", id));
         } else {
-            sql.append("\b\b");
+            sql.deleteCharAt(sql.length() - 2);
         }
 
         sql.append(");");
-
         System.out.println(sql);
+        Statement stm = connection.createStatement();
+
+        if (stm.executeUpdate(sql.toString()) == 0) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 }
