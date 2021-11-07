@@ -14,14 +14,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class TableCreation {
+public class TableCreator {
 
     public static int init(Connection connection, Class tableClass) throws NoSuchTableException, DuplicateIdException, NoSuchColumnException, InvocationTargetException, IllegalAccessException, SQLException {
         Annotation table = tableClass.getAnnotation(Table.class);
 
         if (table == null) throw new NoSuchTableException("Add Table Class");
         String tableName = (String) table.annotationType().getDeclaredMethods()[0].invoke(table, (Object[]) null);
-        StringBuilder sql = new StringBuilder(String.format("CREATE TABLE %s (", tableName));
+        StringBuilder sql = new StringBuilder(String.format("CREATE TABLE `%s` (", tableName));
 
         Field[] fields = tableClass.getDeclaredFields();
         int columnCount = 0;

@@ -32,10 +32,10 @@ class Student {
     int contact;
 }
 
-class TableCreationTest {
+class TableCreatorTest {
     Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/annotation_table", "root", "mysql");
 
-    TableCreationTest() throws SQLException {
+    TableCreatorTest() throws SQLException {
     }
 
     @AfterEach
@@ -52,7 +52,7 @@ class TableCreationTest {
 
     @Test
     void init() throws SQLException, NoSuchTableException, NoSuchColumnException, DuplicateIdException, InvocationTargetException, IllegalAccessException {
-        assertEquals(1, TableCreation.init(connection, Student.class));
+        assertEquals(1, TableCreator.init(connection, Student.class));
 //        assertThrows(DuplicateIdException.class,() -> TableCreation.init(connection,Student.class));
     }
 }
