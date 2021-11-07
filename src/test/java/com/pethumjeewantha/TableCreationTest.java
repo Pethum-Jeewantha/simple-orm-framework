@@ -3,6 +3,8 @@ package com.pethumjeewantha;
 import com.pethumjeewantha.annotations.Column;
 import com.pethumjeewantha.annotations.Id;
 import com.pethumjeewantha.annotations.Table;
+import com.pethumjeewantha.util.DuplicateIdException;
+import com.pethumjeewantha.util.NoSuchColumnException;
 import com.pethumjeewantha.util.NoSuchTableException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +35,7 @@ class TableCreationTest {
     }
 
     @Test
-    void init() throws SQLException, NoSuchTableException {
+    void init() throws SQLException, NoSuchTableException, NoSuchColumnException, DuplicateIdException {
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/annotation_table", "root", "mysql");
         TableCreation.init(connection, Student.class);
     }
