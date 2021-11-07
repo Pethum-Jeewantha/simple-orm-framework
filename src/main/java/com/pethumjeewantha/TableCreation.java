@@ -42,7 +42,7 @@ public class TableCreation {
                     default:
                         type = field.getType().getTypeName();
                 }
-                sql.append(columnClass.value()).append(" ").append(type).append(", ");
+                sql.append("`").append(columnClass.value()).append("` ").append(type).append(", ");
                 columnCount++;
             }
 
@@ -64,7 +64,6 @@ public class TableCreation {
         }
 
         sql.append(");");
-        System.out.println(sql);
         Statement stm = connection.createStatement();
 
         if (stm.executeUpdate(sql.toString()) == 0) {
