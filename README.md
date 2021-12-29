@@ -50,9 +50,12 @@
 6. Annotate the attributes with `@Column()` annotation which is you wish to add column & give it column name as the
    annotation value.
 
-7. You can annotate an attribute as primary key by using `@Id` annotation.
+7. Annotate the attribute with `@Embed` annotation which is you wish to add columns from another class. The nested class
+   should haven't `@id` annotation.
 
-8. Now you can use this as a dependency by using `init` method. Pass the parameters of your connection & Table class.
+8. You can annotate an attribute as primary key by using `@Id` annotation.
+
+9. Now you can use this as a dependency by using `init` method. Pass the parameters of your connection & Table class.
 
 ## Usage
 

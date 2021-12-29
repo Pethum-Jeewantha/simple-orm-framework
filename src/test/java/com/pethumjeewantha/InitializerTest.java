@@ -51,16 +51,16 @@ class Customer {
     int contact;
 }
 
-class TableCreatorTest {
+class InitializerTest {
     Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/annotation_table", "root", "mysql");
 
-    TableCreatorTest() throws SQLException {
+    InitializerTest() throws SQLException {
     }
 
     @AfterEach
     void tearDown() throws SQLException {
-        /*Statement stm = connection.createStatement();
-        stm.executeUpdate("DROP TABLE IF EXISTS student");*/
+        Statement stm = connection.createStatement();
+        stm.executeUpdate("DROP TABLE IF EXISTS student");
     }
 
     @BeforeEach
@@ -71,7 +71,7 @@ class TableCreatorTest {
 
     @Test
     void init() throws SQLException, NoSuchTableException, NoSuchColumnException, DuplicateIdException, InvocationTargetException, IllegalAccessException {
-        assertEquals(1, TableCreator.init(connection, Student.class));
+        assertEquals(1, Initializer.init(connection, Student.class));
 //        assertThrows(DuplicateIdException.class,() -> TableCreation.init(connection,Student.class));
     }
 }

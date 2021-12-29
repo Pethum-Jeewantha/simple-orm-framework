@@ -20,8 +20,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class TableCreator {
-    private static StringBuilder sql = new StringBuilder("CREATE TABLE ");
+public class Initializer {
+    private static final StringBuilder sql = new StringBuilder("CREATE TABLE ");
 
     public static int init(Connection connection, Class tableClass) throws NoSuchTableException, DuplicateIdException, NoSuchColumnException, InvocationTargetException, IllegalAccessException, SQLException {
         Annotation table = tableClass.getAnnotation(Table.class);
@@ -104,7 +104,10 @@ public class TableCreator {
                     type = "DECIMAL";
                     break;
                 default:
-                    if (field.getClass().getName().startsWith("java.lang.")) {
+                    Embed embed = field.getAnnotation(Embed.class);
+                    if (embed != null) {
+                        throw new RuntimeException("The classes must be nested in one level");
+                    } else if (field.getClass().getName().startsWith("java.lang.")) {
                         type = field.getType().getTypeName();
                     } else {
                         continue;
@@ -115,7 +118,7 @@ public class TableCreator {
 
             Id idClass = field.getAnnotation(Id.class);
             if (idClass == null) {
-//                Todo: Throw Exception
+                throw new RuntimeException("Primary key must be in the @table() class");
             }
         }
     }
