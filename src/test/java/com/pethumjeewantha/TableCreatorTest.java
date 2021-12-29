@@ -1,6 +1,12 @@
+/*
+ * Copyright (c) 2021 - present Pethum Jeewantha. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+ */
+
 package com.pethumjeewantha;
 
 import com.pethumjeewantha.annotations.Column;
+import com.pethumjeewantha.annotations.Embed;
 import com.pethumjeewantha.annotations.Id;
 import com.pethumjeewantha.annotations.Table;
 import com.pethumjeewantha.util.DuplicateIdException;
@@ -26,9 +32,22 @@ class Student {
     String id;
     @Column("name")
     String name;
+    @Embed
+    Customer customer;
     @Column("address")
     String address;
     @Column("contact")
+    int contact;
+}
+
+class Customer {
+    @Column("customer_id")
+    String code;
+    @Column("customer_name")
+    String fullName;
+    @Column("customer_address")
+    String address;
+    @Column("customer_contact")
     int contact;
 }
 
@@ -40,8 +59,8 @@ class TableCreatorTest {
 
     @AfterEach
     void tearDown() throws SQLException {
-        Statement stm = connection.createStatement();
-        stm.executeUpdate("DROP TABLE IF EXISTS student");
+        /*Statement stm = connection.createStatement();
+        stm.executeUpdate("DROP TABLE IF EXISTS student");*/
     }
 
     @BeforeEach
